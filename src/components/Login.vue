@@ -1,5 +1,5 @@
 <template>
-  <Alert v-if="showError" @close="showError = false" :errorMessage="errorMessage"></Alert>
+  <AlertComponent v-if="showError" @close="showError = false" :errorMessage="errorMessage"></AlertComponent>
   <div class="flex flex-col md:flex-row bg-gray-300 w-screen min-h-screen">
     <div class="hidden md:flex md:w-1/2 justify-center items-center relative min-h-screen">
       <img src="../assets/loginimg.jpg" alt="Imagem da Serra do Amolar" class="absolute w-full h-full object-cover">
@@ -33,13 +33,15 @@
 <script setup>
 import { ref } from 'vue'
 import { supabase } from '../supabase'
-import Alert from './Alert.vue'
+import AlertComponent from './Alert.vue'
+import { useRouter } from 'vue-router';
 
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const showError = ref(false)
 const errorMessage = ref('')
+const router = useRouter();
 
 const handleLogin = async () => {
   try {
@@ -49,7 +51,7 @@ const handleLogin = async () => {
       password: password.value,
     })
     if (error) throw error
-    alert('Logged in successfully!')
+    router.push('/home');
   } catch (error) {
     errorMessage.value = 'E-mail ou senha inválido'; // ou outra mensagem de erro
     showError.value = true;
